@@ -11,7 +11,7 @@ import requests
 import tweepy
 
 bichos = (
-    # Se um dia criarem um emoji de avestruz, use ele ao invés de um dodo
+    # Se um dia criarem um emoji de avestruz, use ele ao invés de um dodô
     ("avestruz", "🦤"),
     ("águia", "🦅"),
     # O emoji do burro ainda não é universalmente suportado, alguns editores de
@@ -77,7 +77,7 @@ class Parser(html.parser.HTMLParser):
             self.schedule.append(data)
 
 def die(msg):
-    sys.stderr.write(f"{sys.argv[0]}: Erro: " + msg + '\n')
+    sys.stderr.write(sys.argv[0] + ": Erro: " + msg + "\n")
     sys.exit(1)
 
 def help():
@@ -95,10 +95,10 @@ try:
 
     # A CLI não aceita argumentos que não sejam flags
     if len(args) > 0:
-        raise getopt.GetoptError(f"Opção inválida: '{' '.join(args)}'")
+        raise getopt.GetoptError("Opção inválida: " + " ".join(args))
 
 except getopt.GetoptError as e:
-    die(f"{e.msg}\nUse -h para ver a lista de opções")
+    die(e.msg + "\nUse -h para ver a lista de opções")
 
 opts = dict(flags)
 
@@ -111,7 +111,7 @@ if secret_file_path == None and "-l" not in opts:
 
 file_path = opts.get("-f")
 if file_path is not None:
-    f = open(file_path, 'r', encoding="utf-8")
+    f = open(file_path, "r", encoding="utf-8")
     text = f.read()
 else:
     # Resultados do Rio de Janeiro são válidos na maioria do Brasil.
@@ -145,13 +145,13 @@ if i == -1:
 n = 1
 results = []
 for row in parser.raw_data:
-    # Os núemeros apos a travessão representam o bicho
-    l, r = row[i].split('-')
+    # Os números apos a travessão representam o bicho
+    l, r = row[i].split("-")
     name, emoji = bichos[int(r)-1]
     results.append(f"{n}º {l}-{r.rjust(2,'0')} {name} {emoji}")
     n += 1
 
-final = parser.schedule[i] + '\n' + '\n'.join(results)
+final = parser.schedule[i] + "\n" + "\n".join(results)
 
 if "-l" in opts:
     print(final)
@@ -160,13 +160,13 @@ if "-l" in opts:
 # VARIAVEIS DE AMBIENTE NÃO SÃO SEGURAS PARA GUARDAR SENHAS/SEGREDOS EM UM
 # AMBIENTE COMUM, talvez elas sejam em um container no contexto da nuvem, talvez
 # um dia eu implemente essa funcionalidade...
-# Formato do aqruivo de segredos:
+# Formato do arquivo de segredos:
 # nome_da_variavel=conteúdo
 # sem espaços, aspas, linhas vazias ou comentários
-if secret_file_path == '-':
+if secret_file_path == "-":
     secret_file = sys.stdin
 else:
-    secret_file = open(secret_file_path, 'r')
+    secret_file = open(secret_file_path, "r")
 
 # Com certeza existe um jeito melhor de fazer isso
 consumer_key = None
@@ -186,7 +186,7 @@ try:
         elif key == "access_token_secret":
             access_token_secret = value
         else:
-            die("chave '{key}' inválida")
+            die(f"chave '{key}' inválida")
 except ValueError:
     die("Formato do arquivo de segredos inválido")
 
