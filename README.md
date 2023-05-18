@@ -3,6 +3,13 @@
 Um bot que posta os resultados do jogo do bicho do Rio de Janeiro no Twitter
 usando a [API v1.1](https://developer.twitter.com/en/docs/twitter-api/v1).
 
+**AVISO: O Jogo do Bicho é ilegal no Brasil, participar nele se configura como
+uma contravenção penal de acordo com o artigo 50 do Decreto-lei nº 3.688, de 3
+de outubro de 1941. Nem os autores e nem os contribuintes deste software
+endossam qualquer tipo de atividade ilegal ou prática de jogo de azar, este
+software tem a finalidade de meramente reproduzir dados públicos obtidos por
+meio da internet para fins educativos.**
+
 ## Deployment
 
 Esse guia é para sistemas UNIX que você tenha acesso root (VPS, servidor
