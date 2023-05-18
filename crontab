@@ -1,0 +1,6 @@
+30 11 * * *       ~/src/bicho-wrapper.sh
+35 14 * * *       ~/src/bicho-wrapper.sh
+40 16 * * *       ~/src/bicho-wrapper.sh
+30 18 * * 1,2,4,5 ~/src/bicho-wrapper.sh
+20 19 * * 3,6     ~/src/bicho-wrapper.sh
+40 21 * * 1-6     ~/src/bicho-wrapper.sh

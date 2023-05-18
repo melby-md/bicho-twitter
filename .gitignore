@@ -1,0 +1,6 @@
+*.html
+env/
+segredos.txt
+*~
+*.swp
+*.swo
