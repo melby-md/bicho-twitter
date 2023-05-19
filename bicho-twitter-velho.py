@@ -3,6 +3,15 @@
 # Copyright 2023 Pedro Debs <pedrodebs1@gmail.com>
 # Licensed under the MIT license
 # See the LICENSE file
+# 
+# ACHTUNG!
+# Este script é o original, mas, foi abandonado em favor da nova versão, essa
+# versão original faz scraping de um site com um html incrivelmente
+# inconsistente, bagunçado e confuso, o código abaixo funciona 80% das vezes,
+# por incrivel que pareça, porém, nesse site, os resultados saem um pouco mais
+# rápido, então eu resolvi deixar no repositório, use por sua própria conta e
+# risco, este código não é mais mantido, não tem coementários explicando, ele é
+# confuso, use o bicho-twitte.py por favor.
 import getopt
 import re
 import sys
