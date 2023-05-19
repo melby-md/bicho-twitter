@@ -95,7 +95,7 @@ try:
 
     # A CLI não aceita argumentos que não sejam flags
     if len(args) > 0:
-        raise getopt.GetoptError("Opção inválida: " + " ".join(args))
+        raise getopt.GetoptError(f"Opção inválida: '{' '.join(args)}'")
 
 except getopt.GetoptError as e:
     die(e.msg + "\nUse -h para ver a lista de opções")
