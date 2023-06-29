@@ -16,10 +16,6 @@ meio da internet para fins educativos.**
 
 ## Deployment
 
-Esse guia é para sistemas UNIX que você tenha acesso root (VPS, servidor
-físico, etc) apenas, caso você queira instalar em um container ou serviço Paas,
-de uma olhada em <https://github.com/aptible/supercronic>, talvez funcione.
-
 É recomendavel criar um usuário separado para o deployment, `_bicho`, por
 exemplo
 
@@ -86,8 +82,8 @@ seu sistema esteja em outro fuso horário, modifique de acordo.
 
 ## Licença
 
-Copyright 2023 Pedro Debs <<pedrodebs1@gmail.com>>
+Copyright 2023 Pedro Debs &lt;<pedrodebs1@gmail.com>&gt;
 
 Jogo do Bicho Para o Twitter é licenciado sob a licença MIT (Veja o
-arquivo `LICENSE`).
+arquivo `LICENSE` ou <https://spdx.org/licenses/MIT.html>).
 
