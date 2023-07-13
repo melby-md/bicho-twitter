@@ -2,7 +2,7 @@
 # Jogo do Bicho Para o Twitter
 # Copyright 2023 Pedro Debs <pedrodebs1@gmail.com>
 # Licensed under the MIT License that can be found in the LICENSE file or at
-# https://opensource.org/licenses/MIT.
+# https://spdx.org/licenses/MIT.html
 # 
 # ACHTUNG!
 # Este script é o original, mas, foi abandonado em favor da nova versão, essa
