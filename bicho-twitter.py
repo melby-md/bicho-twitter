@@ -188,8 +188,6 @@ try:
         else:
             die(f"chave '{key}' inválida")
 except ValueError:
-    if secret_file is not sys.stdin:
-        secret_file.close()
     die("Formato do arquivo de segredos inválido")
 
 if secret_file is not sys.stdin:
