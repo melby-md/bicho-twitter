@@ -1,4 +1,5 @@
 *.html
+*.php
 env/
 segredos.txt
 *~

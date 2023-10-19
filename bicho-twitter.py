@@ -3,7 +3,7 @@
 # Copyright 2023 Pedro Debs <pedrodebs1@gmail.com>
 # Licensed under the MIT License that can be found in the LICENSE file or at
 # https://spdx.org/licenses/MIT.html
-import getopt
+import argparse
 import html.parser
 import sys
 
@@ -80,50 +80,38 @@ def die(msg):
     sys.stderr.write(sys.argv[0] + ": Erro: " + msg + "\n")
     sys.exit(1)
 
-def help():
-    print(f"""\
-Uso: {sys.argv[0]} OPÇÕES
-OPÇÕES:
-  -h         mostra esta mensagem e sai imediatamente
-  -s ARQUIVO especifica o arquivo com os segredos
-  -l         imprime os resultados no terminal ao invés do Twitter
-  -f ARQUIVO use uma cópia local do site""")
-    sys.exit(0)
+# Obrigado python por tornar o getopt obsoleto, eu amo o argparse :)
+# https://stackoverflow.com/questions/35847084/customize-argparse-help-message
+class HelpFormatter(argparse.HelpFormatter):
+    def add_usage(self, usage, actions, groups, prefix=None):
+        return super().add_usage(usage, actions, groups, "Uso: ")
 
-try:
-    flags, args = getopt.getopt(sys.argv[1:], "hls:f:")
+argparser = argparse.ArgumentParser(add_help=False, formatter_class=HelpFormatter)
+argparser.add_argument("-h", action="help", default=argparse.SUPPRESS, help="Mostra esta mensagem de ajuda e sai")
+argparser.add_argument("-s", metavar="ARQUIVO", help="Especifica o arquivo com os segredos")
+argparser.add_argument("-l", action="store_true", help="Imprime os resultados no terminal ao invés do Twitter")
+argparser.add_argument("-f", metavar="ARQUIVO", help="Use uma cópia local do site")
 
-    # A CLI não aceita argumentos que não sejam flags
-    if len(args) > 0:
-        raise getopt.GetoptError(f"Opção inválida: '{' '.join(args)}'")
+argparser._optionals.title = "Opções"
 
-except getopt.GetoptError as e:
-    die(e.msg + "\nUse -h para ver a lista de opções")
+args = argparser.parse_args()
 
-opts = dict(flags)
-
-if "-h" in opts:
-    help()
-
-secret_file_path = opts.get("-s")
-if secret_file_path == None and "-l" not in opts:
+if args.s is None and not args.l:
     die("Informe um arquivo de segredos")
 
-file_path = opts.get("-f")
-if file_path is not None:
-    f = open(file_path, "r", encoding="utf-8")
-    text = f.read()
+if args.f is not None:
+    with open(args.f, encoding="utf-8") as f:
+        text = f.read()
 else:
     # Resultados do Rio de Janeiro são válidos na maioria do Brasil.
     # Essa URL foi obtida apartir da engenharia reversa do applicativo:
     # https://play.google.com/store/apps/details?id=com.jdb.jogodobichoonline
     # Ela também é possivelmente usada na sequinte extensão:
     # https://chrome.google.com/webstore/detail/deu-no-poste-resultado-do/pmhahobhecijfkmlpkhcjddbifpheffo
-    f = requests.get(
+    with requests.get(
         "https://www.eojogodobicho.com/jogo/get_resultados_hoje.php"
-    )
-    text = f.text
-f.close()
+    ) as f:
+        text = f.text
 
 parser = Parser()
 parser.feed(text)
@@ -153,48 +141,39 @@ for row in parser.raw_data:
 
 final = parser.schedule[i] + "\n" + "\n".join(results)
 
-if "-l" in opts:
+if args.l:
     print(final)
     sys.exit(0)
 
-# VARIAVEIS DE AMBIENTE NÃO SÃO SEGURAS PARA GUARDAR SENHAS/SEGREDOS EM UM
-# AMBIENTE COMUM, talvez elas sejam em um container no contexto da nuvem, talvez
-# um dia eu implemente essa funcionalidade...
 # Formato do arquivo de segredos:
 # nome_da_variavel=conteúdo
 # sem espaços, aspas, linhas vazias ou comentários
-if secret_file_path == "-":
-    secret_file = sys.stdin
-else:
-    secret_file = open(secret_file_path, "r")
+with open(args.s) as secret_file:
 
-# Com certeza existe um jeito melhor de fazer isso
-bearer_token = None
-consumer_key = None
-consumer_secret = None
-access_token = None
-access_token_secret = None
+    # Com certeza existe um jeito melhor de fazer isso
+    bearer_token = None
+    consumer_key = None
+    consumer_secret = None
+    access_token = None
+    access_token_secret = None
 
-try:
-    for record in secret_file:
-        key, value = record.strip().split("=")
-        if key == "bearer_token":
-            bearer_token = value
-        elif key == "consumer_key":
-            consumer_key = value
-        elif key == "consumer_secret":
-            consumer_secret = value
-        elif key == "access_token":
-            access_token = value
-        elif key == "access_token_secret":
-            access_token_secret = value
-        else:
-            die(f"chave '{key}' inválida")
-except ValueError:
-    die("Formato do arquivo de segredos inválido")
-
-if secret_file is not sys.stdin:
-    secret_file.close()
+    try:
+        for record in secret_file:
+            key, value = record.strip().split("=")
+            if key == "bearer_token":
+                bearer_token = value
+            elif key == "consumer_key":
+                consumer_key = value
+            elif key == "consumer_secret":
+                consumer_secret = value
+            elif key == "access_token":
+                access_token = value
+            elif key == "access_token_secret":
+                access_token_secret = value
+            else:
+                die(f"chave '{key}' inválida")
+    except ValueError:
+        die("Formato do arquivo de segredos inválido")
 
 if bearer_token is None:
     die("chave 'bearer_token' em falta")
