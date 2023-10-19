@@ -8,7 +8,7 @@ import html.parser
 import sys
 
 import requests
-import tweepy
+import requests_oauthlib
 
 bichos = (
     # Se um dia criarem um emoji de avestruz, use ele ao invés de um dodô
@@ -145,13 +145,8 @@ if args.l:
     print(final)
     sys.exit(0)
 
-# Formato do arquivo de segredos:
-# nome_da_variavel=conteúdo
-# sem espaços, aspas, linhas vazias ou comentários
 with open(args.s) as secret_file:
 
-    # Com certeza existe um jeito melhor de fazer isso
-    bearer_token = None
     consumer_key = None
     consumer_secret = None
     access_token = None
@@ -159,10 +154,17 @@ with open(args.s) as secret_file:
 
     try:
         for record in secret_file:
-            key, value = record.strip().split("=")
-            if key == "bearer_token":
-                bearer_token = value
-            elif key == "consumer_key":
+
+            record = record.strip()
+
+            if record.startswith("#") or len(record) == 0:
+                continue
+
+            key, value = record.split("=")
+            key = key.strip()
+            value = value.strip()
+
+            if key == "consumer_key":
                 consumer_key = value
             elif key == "consumer_secret":
                 consumer_secret = value
@@ -170,26 +172,28 @@ with open(args.s) as secret_file:
                 access_token = value
             elif key == "access_token_secret":
                 access_token_secret = value
-            else:
-                die(f"chave '{key}' inválida")
-    except ValueError:
-        die("Formato do arquivo de segredos inválido")
 
-if bearer_token is None:
-    die("chave 'bearer_token' em falta")
+    except ValueError:
+        die(f"Formato do arquivo de segredos inválido: '{record}'")
+
 if consumer_key is None:
     die("chave 'consumer_key' em falta")
-if consumer_secret is None:
+elif consumer_secret is None:
     die("chave 'consumer_secret' em falta")
-if access_token is None:
+elif access_token is None:
     die("chave 'access_token' em falta")
-if access_token_secret is None:
+elif access_token_secret is None:
     die("chave 'access_token_secret' em falta")
 
-tweepy.Client(
-    bearer_token=bearer_token,
-    access_token=access_token,
-    access_token_secret=access_token_secret,
-    consumer_key=consumer_key,
-    consumer_secret=consumer_secret
-).create_tweet(text=final)
+auth = requests_oauthlib.OAuth1(
+    consumer_key,
+    consumer_secret,
+    access_token,
+    access_token_secret
+)
+requests.post(
+    auth=auth,
+    url="https://api.twitter.com/2/tweets",
+    json={"text": final},
+    headers={"Content-Type": "application/json"}
+)

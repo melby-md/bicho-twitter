@@ -32,7 +32,7 @@ Copie os arquivos do programa para a home do novo usuário.
 Bibliotecas python:
 
 * requests
-* tweepy
+* requests\_oauthlib
 
 O arquivo `requirements.txt` tem versões exatas das bibliotecas testadas.
 
@@ -61,11 +61,10 @@ O formato do arquivo é:
 
     nome_da_chave=valor
 
-Sem espaços, linhas em branco, aspas ou comentários.
+comentários podem ser postos em sua própria linha e começam com `#`
 
 As chaves necessárias são:
 
-* bearer\_token
 * consumer\_key
 * consumer\_secret
 * access\_token
