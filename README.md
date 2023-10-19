@@ -1,8 +1,7 @@
 # Jogo do Bicho Para o Twitter
 
 Um bot que posta os resultados do jogo do bicho do Rio de Janeiro no Twitter
-usando a [API v1.1](https://developer.twitter.com/en/docs/twitter-api/v1),
-criado para operar a conta
+usando a API v2, criado para operar a conta 
 [@o\_jogo\_do\_bicho](https://twitter.com/o_jogo_do_bicho), mas o código pode
 ser facilmente modificado para enviar os resultados do jogo do bicho para aonde
 você quiser.
@@ -28,7 +27,7 @@ Copie os arquivos do programa para a home do novo usuário.
 ### Dependências
 
 * Alguma implementação do `cron`.
-* Python, versão 3.7, no mínimo.
+* Python, versão 3.8, no mínimo.
 
 Bibliotecas python:
 
@@ -66,6 +65,7 @@ Sem espaços, linhas em branco, aspas ou comentários.
 
 As chaves necessárias são:
 
+* bearer\_token
 * consumer\_key
 * consumer\_secret
 * access\_token

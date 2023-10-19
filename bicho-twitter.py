@@ -169,6 +169,7 @@ else:
     secret_file = open(secret_file_path, "r")
 
 # Com certeza existe um jeito melhor de fazer isso
+bearer_token = None
 consumer_key = None
 consumer_secret = None
 access_token = None
@@ -177,7 +178,9 @@ access_token_secret = None
 try:
     for record in secret_file:
         key, value = record.strip().split("=")
-        if key == "consumer_key":
+        if key == "bearer_token":
+            bearer_token = value
+        elif key == "consumer_key":
             consumer_key = value
         elif key == "consumer_secret":
             consumer_secret = value
@@ -193,17 +196,21 @@ except ValueError:
 if secret_file is not sys.stdin:
     secret_file.close()
 
+if bearer_token is None:
+    die("chave 'bearer_token' em falta")
 if consumer_key is None:
     die("chave 'consumer_key' em falta")
-elif consumer_secret is None:
+if consumer_secret is None:
     die("chave 'consumer_secret' em falta")
-elif access_token is None:
+if access_token is None:
     die("chave 'access_token' em falta")
-elif access_token_secret is None:
+if access_token_secret is None:
     die("chave 'access_token_secret' em falta")
 
-auth = tweepy.OAuth1UserHandler(
-    consumer_key, consumer_secret, access_token, access_token_secret
-)
-api = tweepy.API(auth)
-api.update_status(final)
+tweepy.Client(
+    bearer_token=bearer_token,
+    access_token=access_token,
+    access_token_secret=access_token_secret,
+    consumer_key=consumer_key,
+    consumer_secret=consumer_secret
+).create_tweet(text=final)
