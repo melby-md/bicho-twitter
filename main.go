@@ -166,7 +166,7 @@ loop:
 		n += 1
 		split := strings.SplitAfter(row, "-")
 		bicho_i, _ := strconv.Atoi(split[1])
-		bicho := bichos[bicho_i]
+		bicho := bichos[bicho_i-1]
 		s[n] = fmt.Sprintf("%dº %s%02d %s", n, split[0], bicho_i, bicho)
 	}
 
