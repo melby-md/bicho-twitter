@@ -1,7 +1,10 @@
+bicho-twitter
+a.out
+vendor/
+*.exe
 *.html
 *.php
-env/
-segredos.txt
+*.txt
 *~
 *.swp
 *.swo
