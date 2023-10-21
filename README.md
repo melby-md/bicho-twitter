@@ -22,7 +22,7 @@ exemplo
 
 Copie os arquivos do programa para a home do novo usuário.
 
-    git clone --depth=1 https://github.com/melby-md/jogo-do-bicho-twitter.git /home/_bicho/src
+    git clone --depth=1 https://github.com/melby-md/bicho-twitter.git /home/_bicho/src
 
 ### Dependências
 
