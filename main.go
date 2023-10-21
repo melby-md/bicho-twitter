@@ -112,12 +112,8 @@ OPÇÕES:
 	is_thead := false
 	is_tbody := false
 
-loop:
-	for {
-		switch tkn.Next() {
-		case html.ErrorToken:
-			break loop
-
+	for tt := tkn.Next(); tt != html.ErrorToken; tt = tkn.Next() {
+		switch tt {
 		case html.StartTagToken:
 			t := tkn.Token().Data
 			if t == "tbody" {
@@ -128,10 +124,12 @@ loop:
 
 		case html.TextToken:
 			text := tkn.Token().Data
-			if is_tbody && len(text) > 3 {
-				data[data_x][data_y] = text
-				data_x++
-			} else if is_thead && !is_tbody {
+			if is_tbody {
+				if len(text) > 3 {
+					data[data_x][data_y] = text
+					data_x++
+				}
+			} else if is_thead {
 				sched[sched_i] = text
 				sched_i++
 			}
