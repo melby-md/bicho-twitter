@@ -12,33 +12,33 @@ import requests_oauthlib
 
 bichos = (
     # Se um dia criarem um emoji de avestruz, use ele ao invés de um dodô
-    ("avestruz", "🦤"),
-    ("águia", "🦅"),
+    "avestruz 🦤",
+    "águia 🦅",
     # O emoji do burro ainda não é universalmente suportado, alguns editores de
     # texto não conseguem mostrar ele, por isso usar o código unicode
-    ("burro", "\U0001FACF"), 
-    ("borboleta", "🦋"),
-    ("cachorro", "🐕"),
-    ("cabra", "🐐"),
-    ("carneiro", "🐏"),
-    ("camelo", "🐫"),
-    ("cobra", "🐍"),
-    ("coelho", "🐇"),
-    ("cavalo", "🐎"),
-    ("elefante", "🐘"),
-    ("galo", "🐓"),
-    ("gato", "🐈"),
-    ("jacaré", "🐊"),
-    ("leão", "🦁"),
-    ("macaco", "🐒"),
-    ("porco", "🐖"),
-    ("pavão", "🦚"),
-    ("peru", "🦃"),
-    ("touro", "🐂"),
-    ("tigre", "🐅"),
-    ("urso", "🐻"),
-    ("veado", "🦌"),
-    ("vaca", "🐄")
+    "burro \U0001FACF", 
+    "borboleta 🦋",
+    "cachorro 🐕",
+    "cabra 🐐",
+    "carneiro 🐏",
+    "camelo 🐫",
+    "cobra 🐍",
+    "coelho 🐇",
+    "cavalo 🐎",
+    "elefante 🐘",
+    "galo 🐓",
+    "gato 🐈",
+    "jacaré 🐊",
+    "leão 🦁",
+    "macaco 🐒",
+    "porco 🐖",
+    "pavão 🦚",
+    "peru 🦃",
+    "touro 🐂",
+    "tigre 🐅",
+    "urso 🐻",
+    "veado 🦌",
+    "vaca 🐄"
 )
 
 # Este parser faz o menor esforço possivel para extrair as informações
@@ -131,15 +131,15 @@ if i == -1:
 
 # Monta o texto final para ser enviado
 n = 1
-results = []
+results = [parser.schedule[i]]
 for row in parser.raw_data:
     # Os números apos a travessão representam o bicho
     l, r = row[i].split("-")
-    name, emoji = bichos[int(r)-1]
-    results.append(f"{n}º {l}-{r.rjust(2,'0')} {name} {emoji}")
+    name = bichos[int(r)-1]
+    results.append(f"{n}º {l}-{r.rjust(2,'0')} {name}")
     n += 1
 
-final = parser.schedule[i] + "\n" + "\n".join(results)
+final = "\n".join(results)
 
 if args.l:
     print(final)
