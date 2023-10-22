@@ -4,12 +4,14 @@ GO = go
 GOFLAGS = -trimpath -ldflags="-s -w"
 CGO_ENABLED = 0
 
-all: bicho-twitter
+Windows_NT = .exe
 
-bicho-twitter: main.go go.mod go.sum
+all: bicho-twitter$($(OS))
+
+bicho-twitter bicho-twitter.exe: main.go go.mod go.sum
 	CGO_ENABLED=$(CGO_ENABLED) $(GO) build $(GOFLAGS)
 
 clean:
-	rm -f bicho-twitter
+	rm -f bicho-twitter bicho-twitter.exe
 
 .PHONY: clean
