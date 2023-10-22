@@ -1,0 +1,2 @@
+#!/bin/sh
+exec ~/bicho-twitter -s ~/segredos.txt

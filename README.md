@@ -6,9 +6,9 @@ no Twitter usando a API v2, criado para operar a conta
 ser facilmente modificado para enviar os resultados do jogo do bicho para aonde
 você quiser.
 
-uma versão de python pode ser encontrada no commit
+uma versão de python pode ser encontrada do commit
 [a8499de63d](https://github.com/melby-md/bicho-twitter/tree/a8499de63d77e86e031d11de0b9badfdc26de917)
-para traz.
+para trás.
 
 **AVISO: O Jogo do Bicho é ilegal no Brasil, participar nele se configura como
 uma contravenção penal de acordo com o artigo 50 do Decreto-lei nº 3.688, de 3
@@ -65,16 +65,18 @@ As chaves necessárias são:
 ## Rodando como um cronjob
 
 É recomendavel criar um usuário separado para o deployment, `_bicho`, por
-exemplo
+exemplo:
 
-    adduser -s /sbin/nologin _bicho
+    adduser --system --shell  /sbin/nologin --home /home/_bicho _bicho
 
-Adicione o conteúdo de `crontab` ao crontab do usuário, modifique ele de acordo
-com a localização do executavel e do arquivo de segredos. Os horários em
-`crontab` estão no horário de Brasília (UTC-3), caso o seu sistema esteja em
-outro fuso horário, modifique de acordo.
+Copie o binário `bicho-twitter`, o script `bicho-cron`, o arquivo de segredos e
+o `crontab` à maquina que vai rodar o cronjob e modifique o `crontab` e o script
+de acordo com a localização dos arquivos copiados. Os horários em `crontab`
+estão no horário de Brasília (UTC-3), caso o seu sistema esteja em outro fuso
+horário, modifique de acordo. Por fim adicione o conteúdo de `crontab` ao
+crontab do usuário:
 
-    crontab -u _bicho src/crontab # isso vai apagar o crontab desse usuário
+    crontab -u _bicho crontab # isso vai apagar o crontab desse usuário
 
 ## Copyright
 

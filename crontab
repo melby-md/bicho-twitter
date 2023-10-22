@@ -1,6 +1,6 @@
-30 11 * * *       ~/bicho-twitter -s ~/segredos.txt
-35 14 * * *       ~/bicho-twitter -s ~/segredos.txt
-40 16 * * *       ~/bicho-twitter -s ~/segredos.txt
-40 18 * * 1,2,4,5 ~/bicho-twitter -s ~/segredos.txt
-20 19 * * 3,6     ~/bicho-twitter -s ~/segredos.txt
-40 21 * * 1-6     ~/bicho-twitter -s ~/segredos.txt
+30 11 * * *       ~/bicho-cron
+35 14 * * *       ~/bicho-cron
+40 16 * * *       ~/bicho-cron
+40 18 * * 1,2,4,5 ~/bicho-cron
+20 19 * * 3,6     ~/bicho-cron
+40 21 * * 1-6     ~/bicho-cron
