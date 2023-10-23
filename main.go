@@ -143,14 +143,13 @@ OPÇÕES:
 	}
 
 	// Descobre a coluna com os resultados mais recentes
-	var i int
-	for i = 0; i < 5; i++ {
-		if strings.HasPrefix(data[i][0], "00") {
+	i := -1
+	for _, column := range data {
+		if column[0] == "" || strings.HasPrefix(column[0], "00") {
 			break
 		}
+		i++
 	}
-
-	i--
 
 	if i == -1 {
 		l.Fatal("Nenhum resultado hoje")
