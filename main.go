@@ -52,7 +52,8 @@ func main() {
 		"vaca 🐄",
 	}
 
-	l := log.New(os.Stderr, "", 0)
+	log.SetPrefix("Erro: ")
+	log.SetFlags(0)
 
 	help := flag.Bool("h", false, "Mostra esta mensagem de ajuda e sai")
 	local := flag.Bool("l", false, "Imprime os resultados no terminal ao invés do Twitter")
@@ -61,7 +62,7 @@ func main() {
 	flag.Parse()
 
 	if *help {
-		fmt.Printf(`Uso: %s [OPÇÔES]
+		fmt.Fprintf(os.Stderr, `Uso: %s [OPÇÔES]
 OPÇÕES:
    -h         Mostra esta mensagem de ajuda e sai
    -l         Imprime os resultados no terminal ao invés do Twitter
@@ -72,7 +73,7 @@ OPÇÕES:
 	}
 
 	if !*local && *secrets_file_path == "" {
-		l.Fatal("segredo")
+		log.Fatal("Arquivo de segredos em falta")
 	}
 
 	var file io.ReadCloser
@@ -86,14 +87,14 @@ OPÇÕES:
 		// https://chrome.google.com/webstore/detail/deu-no-poste-resultado-do/pmhahobhecijfkmlpkhcjddbifpheffo
 		resp, err := http.Get("https://www.eojogodobicho.com/jogo/get_resultados_hoje.php")
 		if err != nil {
-			l.Fatal(err)
+			log.Fatal(err)
 		}
 
 		file = resp.Body
 	} else {
 		file, err = os.Open(*local_copy)
 		if err != nil {
-			l.Fatal(err)
+			log.Fatal(err)
 		}
 	}
 	defer file.Close()
@@ -152,7 +153,7 @@ OPÇÕES:
 	}
 
 	if i == -1 {
-		l.Fatal("Nenhum resultado hoje")
+		log.Fatal("Nenhum resultado hoje")
 
 	}
 
@@ -177,7 +178,7 @@ OPÇÕES:
 
 	secrets_file, err := os.Open(*secrets_file_path)
 	if err != nil {
-		l.Fatal(err)
+		log.Fatal(err)
 	}
 	defer secrets_file.Close()
 
@@ -198,7 +199,7 @@ OPÇÕES:
 		split := strings.SplitN(line, "=", 2)
 
 		if len(split) == 1 {
-			l.Fatalf("Formato do arquivo de segredos inválido: '%s'", line)
+			log.Fatalf("Formato do arquivo de segredos inválido: '%s'", line)
 		}
 
 		key := strings.TrimSpace(split[0])
@@ -216,13 +217,13 @@ OPÇÕES:
 		}
 	}
 	if consumer_key == "" {
-		l.Fatal("chave 'consumer_key' em falta")
+		log.Fatal("chave 'consumer_key' em falta")
 	} else if consumer_secret == "" {
-		l.Fatal("chave 'consumer_secret' em falta")
+		log.Fatal("chave 'consumer_secret' em falta")
 	} else if access_token == "" {
-		l.Fatal("chave 'access_token' em falta")
+		log.Fatal("chave 'access_token' em falta")
 	} else if access_token_secret == "" {
-		l.Fatal("chave 'access_token_secret' em falta")
+		log.Fatal("chave 'access_token_secret' em falta")
 	}
 
 	config := oauth1.NewConfig(consumer_key, consumer_secret)
@@ -231,9 +232,13 @@ OPÇÕES:
 	httpClient := config.Client(oauth1.NoContext, token)
 
 	json_str, _ := json.Marshal(map[string]string{"text": final})
-	_, err = httpClient.Post("https://api.twitter.com/2/tweets", "application/json", bytes.NewReader(json_str))
+	resp, err := httpClient.Post("https://api.twitter.com/2/tweets", "application/json", bytes.NewReader(json_str))
 
 	if err != nil {
-		l.Fatal(err)
+		log.Fatal(err)
+	}
+
+	if resp.StatusCode != 201 {
+		log.Fatal(resp.Status)
 	}
 }
