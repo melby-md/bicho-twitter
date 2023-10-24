@@ -75,7 +75,8 @@ OPÇÕES:
 		l.Fatal("segredo")
 	}
 
-	var file io.Reader
+	var file io.ReadCloser
+	var err error
 
 	if *local_copy == "" {
 		// Resultados do Rio de Janeiro são válidos na maioria do Brasil.
@@ -90,13 +91,12 @@ OPÇÕES:
 
 		file = resp.Body
 	} else {
-		f, err := os.Open(*local_copy)
+		file, err = os.Open(*local_copy)
 		if err != nil {
 			l.Fatal(err)
 		}
-		defer f.Close()
-		file = f
 	}
+	defer file.Close()
 
 	// A primeira fase do parsing extrai os dados brutos, os resultados
 	// ficam guardados na matriz data e o nome de cada horário fica no
