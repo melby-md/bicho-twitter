@@ -6,8 +6,6 @@ package main
 
 import (
 	"bufio"
-	"bytes"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"github.com/dghubble/oauth1"
@@ -168,7 +166,15 @@ OPÇÕES:
 		s[n] = fmt.Sprintf("%dº %s%02d %s", n, split[0], bicho_i, bicho)
 	}
 
-	final := strings.Join(s[:], "\n")
+	var nl string
+
+	if *local {
+		nl = "\n"
+	} else {
+		nl = "\\n"
+	}
+
+	final := strings.Join(s[:], nl)
 	if *local {
 		fmt.Println(final)
 		os.Exit(0)
@@ -231,8 +237,8 @@ OPÇÕES:
 
 	httpClient := config.Client(oauth1.NoContext, token)
 
-	json_str, _ := json.Marshal(map[string]string{"text": final})
-	resp, err := httpClient.Post("https://api.twitter.com/2/tweets", "application/json", bytes.NewReader(json_str))
+	json_str := fmt.Sprintf(`{"text": "%s"}`, final)
+	resp, err := httpClient.Post("https://api.twitter.com/2/tweets", "application/json", strings.NewReader(json_str))
 
 	if err != nil {
 		log.Fatal(err)
