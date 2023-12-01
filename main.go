@@ -67,7 +67,7 @@ OPÇÕES:
    -h         Mostra esta mensagem de ajuda e sai
    -l         Imprime os resultados no terminal ao invés do Twitter
    -s ARQUIVO Especifica o arquivo com os segredos
-   -f AQRUIVO Usa uma cópia local do site
+   -f ARQUIVO Usa uma cópia local do site
 `, os.Args[0])
 		os.Exit(0)
 	}

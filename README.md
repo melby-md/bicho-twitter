@@ -6,7 +6,7 @@ no Twitter usando a API v2, criado para operar a conta
 ser facilmente modificado para enviar os resultados do jogo do bicho para aonde
 você quiser.
 
-uma versão de python pode ser encontrada do commit
+uma versão escrita em python pode ser encontrada do commit
 [a8499de63d](https://github.com/melby-md/bicho-twitter/tree/a8499de63d77e86e031d11de0b9badfdc26de917)
 para trás.
 
