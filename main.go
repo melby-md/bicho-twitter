@@ -162,10 +162,10 @@ OPÇÕES:
 
 	for n, row := range data[i] {
 		n += 1
-		split := strings.SplitAfter(row, "-")
-		bicho_i, _ := strconv.Atoi(split[1])
+		dash := strings.Index(row, "-")
+		bicho_i, _ := strconv.Atoi(row[dash+1:])
 		bicho := bichos[bicho_i-1]
-		s[n] = fmt.Sprintf("%dº %s%02d %s", n, split[0], bicho_i, bicho)
+		s[n] = fmt.Sprintf("%dº %s%02d %s", n, row[:dash+1], bicho_i, bicho)
 	}
 
 	final := strings.Join(s[:], "\n")
@@ -192,18 +192,18 @@ OPÇÕES:
 	for scanner.Scan() {
 		line := strings.TrimSpace(scanner.Text())
 
-		if len(line) == 0 || line[0] == '#' {
+		if line == "" || line[0] == '#' {
 			continue
 		}
 
-		split := strings.SplitN(line, "=", 2)
+		eq := strings.Index(line, "=")
 
-		if len(split) == 1 {
+		if eq == -1 {
 			log.Fatalf("Formato do arquivo de segredos inválido: '%s'", line)
 		}
 
-		key := strings.TrimSpace(split[0])
-		value := strings.TrimSpace(split[1])
+		key := strings.TrimSpace(line[:eq])
+		value := strings.TrimSpace(line[eq+1:])
 
 		switch key {
 		case "consumer_key":
