@@ -1,3 +1,9 @@
+# ACHTUNG!
+
+Este software não é mais mantido desde Dezembro de 2023, os horários programados
+para as postagens não condizem mais com os horários atuais de divulgação dos
+resultados.
+
 # Jogo do Bicho Para o Twitter
 
 Um bot escrito em go que posta os resultados do jogo do bicho do Rio de Janeiro
